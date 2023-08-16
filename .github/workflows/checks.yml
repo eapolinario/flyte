@@ -36,7 +36,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: ${{ inputs.go-version }}
-      - name: Lint
+      - name: Run unit tests
         # TODO: update this to use test_unit_codecov
         # run: make install && make test_unit_codecov
         run: make install && make test_unit
