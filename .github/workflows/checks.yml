@@ -1,0 +1,81 @@
+name: Build components images
+on:
+  # TODO: enable push
+  # push:
+  #   - master
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to be released - Just for testing will be removed prior to merging'
+        required: true
+        type: string
+      gh-org:
+        description: 'Github organization'
+        required: true
+        # TODO: Make default as flyteorg
+        default: 'eapolinario'
+      go-version:
+        description: 'Go version to install'
+        default: '1.19'
+        type: string
+jobs:
+  run-unit-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        component:
+          - flytepropeller
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.component }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ inputs.go-version }}
+      - name: Lint
+        # TODO: update this to use test_unit_codecov
+        # run: make install && make test_unit_codecov
+        run: make install && make test_unit
+  build-image:
+    strategy:
+      fail-fast: false
+      matrix:
+        component:
+          - flytepropeller
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.component }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ inputs.go-version }}
+      -
+  push_docker_image:
+    name: Build & Push Flytepropeller Image
+    defaults:
+      run:
+        working-directory: ${{ matrix.component }}
+    # TODO: enable bump_version prior to this
+    # needs: [ bump_version ]
+    uses: flyteorg/flytetools/.github/workflows/publish.yml@master
+    with:
+      # TODO: get version from bump_version step
+      # version: ${{ needs.bump_version.outputs.version }}
+      version: ${{ inputs.version }}
+      dockerfile: Dockerfile
+      push: true
+      repository: ${{ inputs.organization }}
+    secrets:
+      # FLYTE_BOT_PAT: ${{ secrets.FLYTE_BOT_PAT }}
+      # TODO: can we use the default github token?
+      FLYTE_BOT_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # FLYTE_BOT_USERNAME: ${{ secrets.FLYTE_BOT_USERNAME }}
+      FLYTE_BOT_USERNAME: ${{ inputs.organization }}
