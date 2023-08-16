@@ -61,8 +61,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: "${{ inputs.organization }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
+          username: "${{ secrets.FLYTE_BOT_USERNAME }}"
+          password: "${{ secrets.FLYTE_BOT_PAT }}"
   #
   # push_docker_image:
   #   name: Build & Push Flytepropeller Image
