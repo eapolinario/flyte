@@ -57,24 +57,55 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: ${{ inputs.go-version }}
-  push_docker_image:
-    name: Build & Push Flytepropeller Image
-    defaults:
-      run:
-        working-directory: ${{ matrix.component }}
-    # TODO: enable bump_version prior to this
-    # needs: [ bump_version ]
-    uses: flyteorg/flytetools/.github/workflows/publish.yml@master
-    with:
-      # TODO: get version from bump_version step
-      # version: ${{ needs.bump_version.outputs.version }}
-      version: ${{ inputs.version }}
-      dockerfile: Dockerfile
-      push: true
-      repository: ${{ inputs.organization }}
-    secrets:
-      # FLYTE_BOT_PAT: ${{ secrets.FLYTE_BOT_PAT }}
-      # TODO: can we use the default github token?
-      FLYTE_BOT_PAT: ${{ secrets.GITHUB_TOKEN }}
-      # FLYTE_BOT_USERNAME: ${{ secrets.FLYTE_BOT_USERNAME }}
-      FLYTE_BOT_USERNAME: ${{ inputs.organization }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: "${{ inputs.organization }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+  #
+  # push_docker_image:
+  #   name: Build & Push Flytepropeller Image
+  #   needs: [ bump_version ]
+  #   uses: flyteorg/flytetools/.github/workflows/publish.yml@master
+  #   with:
+  #     # TODO: get version from bump_version step
+  #     # version: ${{ needs.bump_version.outputs.version }}
+  #     version: ${{ inputs.version }}
+  #     dockerfile: Dockerfile
+  #     push: true
+  #     repository: ${{ inputs.organization }}
+  #   secrets:
+  #     # FLYTE_BOT_PAT: ${{ secrets.FLYTE_BOT_PAT }}
+  #     # TODO: can we use the default github token?
+  #     FLYTE_BOT_PAT: ${{ secrets.GITHUB_TOKEN }}
+  #     # FLYTE_BOT_USERNAME: ${{ secrets.FLYTE_BOT_USERNAME }}
+  #     FLYTE_BOT_USERNAME: ${{ inputs.organization }}
+  #
+  # push_docker_image:
+  #   name: Build & Push Flytepropeller Image
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       component:
+  #         - flytepropeller
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: ${{ matrix.component }}
+  #   steps:
+  #
+  #   uses: flyteorg/flytetools/.github/workflows/publish.yml@master
+  #   with:
+  #     # TODO: get version from bump_version step
+  #     # version: ${{ needs.bump_version.outputs.version }}
+  #     version: ${{ inputs.version }}
+  #     dockerfile: Dockerfile
+  #     push: true
+  #     repository: ${{ inputs.organization }}
+  #   secrets:
+  #     # FLYTE_BOT_PAT: ${{ secrets.FLYTE_BOT_PAT }}
+  #     # TODO: can we use the default github token?
+  #     FLYTE_BOT_PAT: ${{ secrets.GITHUB_TOKEN }}
+  #     # FLYTE_BOT_USERNAME: ${{ secrets.FLYTE_BOT_USERNAME }}
+  #     FLYTE_BOT_USERNAME: ${{ inputs.organization }}
