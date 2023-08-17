@@ -79,7 +79,7 @@ jobs:
       # version: ${{ needs.bump_version.outputs.version }}
       version: ${{ inputs.version }}
       component: ${{ matrix.component }}
-      github-organization: ${{ inputs.organization }}
+      github-organization: ${{ inputs.gh-org }}
       dockerfile: Dockerfile
       # TODO: enable this
       push: false
