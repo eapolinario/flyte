@@ -31,11 +31,19 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Base labels
+*/}}
+{{- define "flyte-binary.baseLabels" -}}
+app.kubernetes.io/name: {{ include "flyte-binary.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "flyte-binary.labels" -}}
 helm.sh/chart: {{ include "flyte-binary.chart" . }}
-{{ include "flyte-binary.selectorLabels" . }}
+{{ include "flyte-binary.baseLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,8 +54,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "flyte-binary.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "flyte-binary.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "flyte-binary.baseLabels" . }}
+app.kubernetes.io/component: flyte-binary
 {{- end }}
 
 {{/*
@@ -62,52 +70,168 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-Extra Minio connection settings
+Flag to use external configuration.
 */}}
-{{- define "flyte-binary.minioExtraConnectionSettings" -}}
-access-key: minio
-auth-type: accesskey
-secret-key: miniostorage
-disable-ssl: true
-endpoint: "http://localhost:30002"
+{{- define "flyte-binary.configuration.externalConfiguration" -}}
+{{- or .Values.configuration.externalConfigMap .Values.configuration.externalSecretRef -}}
+{{- end -}}
+
+{{/*
+Get the Flyte configuration ConfigMap name.
+*/}}
+{{- define "flyte-binary.configuration.configMapName" -}}
+{{- printf "%s-config" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Flyte configuration Secret name.
+*/}}
+{{- define "flyte-binary.configuration.configSecretName" -}}
+{{- printf "%s-config-secret" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Flyte user data prefix.
+*/}}
+{{- define "flyte-binary.configuration.storage.userDataPrefix" -}}
+{{- $userDataContainer := required "User data container required" .Values.configuration.storage.userDataContainer -}}
+{{- if eq "s3" .Values.configuration.storage.provider -}}
+{{- printf "s3://%s/data" $userDataContainer -}}
+{{- else if eq "gcs" .Values.configuration.storage.provider -}}
+{{- printf "gs://%s/data" $userDataContainer -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the Flyte logging configuration.
+*/}}
+{{- define "flyte-binary.configuration.logging.plugins" -}}
+{{- with .Values.configuration.logging.plugins -}}
+kubernetes-enabled: {{ .kubernetes.enabled }}
+{{- if .kubernetes.enabled }}
+kubernetes-template-uri: {{ required "Template URI required for Kubernetes logging plugin" .kubernetes.templateUri }}
+{{- end }}
+cloudwatch-enabled: {{ .cloudwatch.enabled }}
+{{- if .cloudwatch.enabled }}
+cloudwatch-template-uri: {{ required "Template URI required for CloudWatch logging plugin" .cloudwatch.templateUri }}
+{{- end }}
+stackdriver-enabled: {{ .stackdriver.enabled }}
+{{- if .stackdriver.enabled }}
+stackdriver-template-uri: {{ required "Template URI required for stackdriver logging plugin" .stackdriver.templateUri }}
+{{- end }}
+{{- if .custom }}
+templates: {{- toYaml .custom | nindent 2 -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the Secret name for Flyte admin authentication secrets.
+*/}}
+{{- define "flyte-binary.configuration.auth.adminAuthSecretName" -}}
+{{- printf "%s-admin-auth" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Secret name for Flyte authentication client secrets.
+*/}}
+{{- define "flyte-binary.configuration.auth.clientSecretName" -}}
+{{- printf "%s-client-secrets" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Flyte cluster resource templates ConfigMap name.
+*/}}
+{{- define "flyte-binary.clusterResourceTemplates.configMapName" -}}
+{{- printf "%s-cluster-resource-templates" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Flyte HTTP service name
+*/}}
+{{- define "flyte-binary.service.http.name" -}}
+{{- printf "%s-http" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Flyte GRPC service name
+*/}}
+{{- define "flyte-binary.service.grpc.name" -}}
+{{- printf "%s-grpc" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Flyte service HTTP port.
+*/}}
+{{- define "flyte-binary.service.http.port" -}}
+{{- default 8088 .Values.service.ports.http -}}
+{{- end -}}
+
+{{/*
+Get the Flyte service GRPC port.
+*/}}
+{{- define "flyte-binary.service.grpc.port" -}}
+{{- default 8089 .Values.service.ports.grpc -}}
+{{- end -}}
+
+{{/*
+Get the Flyte agent service GRPC port.
+*/}}
+{{- define "flyte-binary.flyteagent.grpc.port" -}}
+{{- default 8000 .Values.service.ports.grpc -}}
+{{- end -}}
+
+
+{{/*
+Get the Flyte webhook service name.
+*/}}
+{{- define "flyte-binary.webhook.serviceName" -}}
+{{- printf "%s-webhook" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Flyte webhook secret name.
+*/}}
+{{- define "flyte-binary.webhook.secretName" -}}
+{{- printf "%s-webhook-secret" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the Flyte ClusterRole name.
+*/}}
+{{- define "flyte-binary.rbac.clusterRoleName" -}}
+{{- printf "%s-cluster-role" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Get the name of the Flyte Agent Deployment.
+*/}}
+{{- define "flyte-binary.agent.name" -}}
+{{- printf "%s-agent" (include "flyte-binary.fullname" .) -}}
+{{- end -}}
+
+{{/*
+Flyte Agent selector labels
+*/}}
+{{- define "flyte-binary.agent.selectorLabels" -}}
+{{ include "flyte-binary.baseLabels" . }}
+app.kubernetes.io/component: agent
 {{- end }}
 
 {{/*
-Extra Minio env vars for propeller
+Get the name of the service account to use
 */}}
-{{- define "flyte-binary.minioExtraEnvVars" -}}
-- FLYTE_AWS_ENDPOINT: "http://flyte-sandbox-minio.flyte:9000"
-- FLYTE_AWS_ACCESS_KEY_ID: minio
-- FLYTE_AWS_SECRET_ACCESS_KEY: miniostorage
+{{- define "flyte-binary.agent.serviceAccountName" -}}
+{{- if .Values.flyteagent.serviceAccount.create }}
+{{- default (include "flyte-binary.agent.name" .) .Values.flyteagent.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.flyteagent.serviceAccount.name }}
+{{- end }}
 {{- end }}
 
 {{/*
-For creating a K8s secret for the database password
+Get the Flyte Agent service port.
 */}}
-{{- define "flyte-binary.database.secret" -}}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: flyte-db-pass
-type: Opaque
-stringData:
-  pass.txt: "{{ .Values.database.password }}"
-{{- end }}
-
-{{- define "flyte-binary.database.secretvol" -}}
-- name: db-pass
-  secret:
-    secretName: flyte-db-pass
-{{- end }}
-
-{{- define "flyte-binary.database.secretvolmount" -}}
-- mountPath: /etc/db
-  name: db-pass
-{{- end }}
-
-{{- define "flyte-binary.database.secretpathconfig" -}}
-passwordPath: /etc/db/pass.txt
-{{- end }}
-
-
-
+{{- define "flyte-binary.agent.servicePort" -}}
+{{- default 8000 .Values.flyteagent.service.port -}}
+{{- end -}}

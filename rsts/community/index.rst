@@ -6,115 +6,70 @@ Community
 
 Flyte is an ambitious open source project and would not be possible without an
 amazing community. We are a completely open community and strive to treat
-every member with respect. You will find the community welcoming and responsive,
-so please join us on:
+every member with respect. You will find the community welcoming and responsive!
 
-.. panels::
-    :container: container-lg pb-4
-    :column: col-lg-4 col-md-4 col-sm-4 col-xs-12 p-2
-    :body: text-center
+Please join us on:
 
-    .. link-button:: https://slack.flyte.org
-       :type: url
-       :text: Slack
-       :classes: btn-block stretched-link
+.. image:: https://img.shields.io/badge/Slack-Chat-pink?style=for-the-badge
+    :target: https://slack.flyte.org
+    :alt: Flyte Slack
 
-    :fa:`slack`
+.. image:: https://img.shields.io/badge/Github-Discussion-green?style=for-the-badge
+    :target: https://github.com/flyteorg/flyte/discussions
+    :alt: Github Discussion
 
-    ---
+.. image:: https://img.shields.io/badge/Twitter-Social-blue?style=for-the-badge
+    :target: https://twitter.com/flyteorg
+    :alt: Twitter
 
-    .. link-button:: https://twitter.com/flyteorg
-       :type: url
-       :text: Twitter
-       :classes: btn-block stretched-link
+.. image:: https://img.shields.io/badge/LinkedIn-Social-lightblue?style=for-the-badge
+    :target: https://www.linkedin.com/groups/13962256
+    :alt: LinkedIn
 
-    :fa:`twitter`
+.. TODO: add back when new newsletter is up and running
+.. Also, feel free to sign up for our newsletter, Flyte Monthly, for a quick update on what we've been up to and upcoming events.
 
-    ---
-
-    .. link-button:: https://github.com/flyteorg/flyte/discussions
-       :type: url
-       :text: Github Discussions
-       :classes: btn-block stretched-link
-
-    :fa:`github`
-
-    ---
-
-    .. link-button:: https://www.linkedin.com/groups/13962256
-       :type: url
-       :text: LinkedIn Group
-       :classes: btn-block stretched-link
-
-    :fa:`linkedin`
-    
-    ---
-
-    .. link-button:: https://groups.google.com/a/flyte.org/d/forum/users
-       :type: url
-       :text: Google Group
-       :classes: btn-block stretched-link
-
-    :fa:`google`
-
-    ---
-
-    .. link-button:: https://blog.flyte.org/
-       :type: url
-       :text: Flyte Blog
-       :classes: btn-block stretched-link
-
-    :fa:`blog`
+.. .. link-button:: https://www.getrevue.co/profile/flyte
+..     :type: url
+..     :text: Flyte Monthly
+..    :classes: btn-outline-secondary
 
 
-Also, feel free to sign up for our newsletter, Flyte Monthly, for a quick update on what we've been up to and upcoming events.
+Open Source Community Meeting 
+-----------------------------
 
-.. link-button:: https://www.getrevue.co/profile/flyte
-    :type: url
-    :text: Flyte Monthly
-    :classes: btn-outline-secondary
-    
+When: every other Tuesday, 9:00 AM Pacific Time.
+You're welcome to join and learn from other commmunity members sharing their experiences with Flyte or any other technology from the AI ecosystem.
+Check out the event details and add it to your `calendar <https://www.addevent.com/event/EA7823958>`_, or just pop in! 
 
-Open Source Community Sync
---------------------------
-
-We host an Open Source Community Sync every other Tuesday, 9:00 AM PDT/PST.
-Check it out, subscribe to the `calendar <https://www.addevent.com/calendar/kE355955>`_, or just pop in!
-
-.. link-button:: https://zoom.us/s/93875115830?pwd=YWZWOHl1ODRRVjhjVkxSV0pmZkJaZz09#success
-    :type: url
-    :text: Zoom Link
-    :classes: btn-outline-secondary
-    
-If you'd like to give a 3-5 minute ⚡ Lightning Talk ⚡ during our Open Source Community Sync, or even suggest a topic for someone else to talk about, let us know!
-
-.. link-button:: https://docs.google.com/forms/d/e/1FAIpQLSekwk2fieIVxmRuuNelbIp8DdXKe_SanlRguBtETbcSNHD11w/viewform
-    :type: url
-    :text: Lightning Talk Sign Up Sheet
-    :classes: btn-outline-secondary
+.. image:: https://img.shields.io/badge/Join-Zoom-blue?style=for-the-badge
+    :target: https://www.addevent.com/event/EA7823958
+    :alt: Zoom Link
 
 Office Hours
 ------------
 
-Flyte maintainers are available on Zoom for you to ask anything, weekly on Wednesdays:
+`Book a 30 minutes session <https://calendly.com/flyte-office-hours-01/30min>`_ with a Flyte maintainer and get your questions answered!   
 
-.. link-button:: https://www.addevent.com/event/zF10349020/
-    :type: url
-    :text: 7:00 am PT / 3:00 pm GMT
-    :classes: btn-outline-secondary
+Schedule your session depending on the topic to secure the availability of a maintainer with expertise in the area:
 
-.. link-button:: https://www.addevent.com/event/dQ10349168/
-    :type: url
-    :text: 9:00 pm PT / 10:30 am IST
-    :classes: btn-outline-secondary
+- **7:00a.m. PT**: 
+   - Anything flytekit-related
+   - Flyte releases
+   - flytepropeller features
+   - Plugin implementation
+   - Platform configuration
+- **1:00p.m. PT**:
+   - Flyte deployment on cloud
+- **9:00p.m. PT**:
+   - Flytekit-related
+   - Use cases 
+   - Getting started (workflow onboarding)
+   - Integrations
 
-.. toctree::
-    :caption: Community
-    :maxdepth: -1
-    :name: communitytoc
-    :hidden:
 
-    contribute
-    roadmap
-    Frequently Asked Questions <https://github.com/flyteorg/flyte/discussions/categories/q-a>
-    troubleshoot
+
+Newsletter
+----------
+
+`Join the Flyte mailing list <https://lists.lfaidata.foundation/g/flyte-announce/join>`_ to receive the monthly newsletter 

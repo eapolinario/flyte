@@ -4,7 +4,11 @@
 ARG FLYTE_VERSION="latest"
 FROM ghcr.io/flyteorg/flyteconsole-release:${FLYTE_VERSION} AS flyteconsole
 
-FROM golang:1.18.0-alpine3.15 AS go_builder
+FROM --platform=${BUILDPLATFORM} golang:1.19.0-alpine3.16 AS go_builder
+
+ARG TARGETARCH
+ENV GOARCH=${TARGETARCH}
+ENV GOOS=linux
 
 # Install dependencies
 RUN apk add --no-cache build-base
@@ -13,7 +17,7 @@ COPY go.mod go.sum /app/flyte/
 WORKDIR /app/flyte
 RUN go mod download
 
-COPY --from=flyteconsole /app/dist /app/flyte/cmd/single/dist
+COPY --from=flyteconsole /app/ cmd/single/dist
 
 COPY cmd/ /app/flyte/cmd/
 RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/root/go/pkg/mod  go build -tags console -v -o /flyte cmd/main.go

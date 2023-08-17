@@ -94,7 +94,7 @@ data:
     plugins:
       k8s:
         co-pilot:
-          image: cr.flyte.org/flyteorg/flytecopilot:v0.0.24
+          image: cr.flyte.org/flyteorg/flytecopilot:v0.0.33
           name: flyte-copilot-
           start-timeout: 30s
   core.yaml: | 
@@ -426,7 +426,7 @@ spec:
   template:
     metadata:
       annotations:
-        configChecksum: "123b14fa527f432b1b68d510c4423ab76f657aec5cebb2f8b9c16f477d4bc39"
+        configChecksum: "a7e3d3a1b6ebefd77df6b03b569a819d21831e1a837865e61cfec358e9a165f"
       labels: 
         app.kubernetes.io/name: flytepropeller
         app.kubernetes.io/instance: flyte
@@ -452,12 +452,12 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: "cr.flyte.org/flyteorg/flytepropeller:v1.1.47"
+        image: "cr.flyte.org/flyteorg/flytepropeller:v1.1.116"
         imagePullPolicy: "IfNotPresent"
         name: flytepropeller
         ports:
         - containerPort: 10254
-        resources: 
+        resources:
           limits:
             cpu: 1
             ephemeral-storage: 1Gi
@@ -467,10 +467,10 @@ spec:
             ephemeral-storage: 1Gi
             memory: 2Gi
         volumeMounts:
-          - name: config-volume
-            mountPath: /etc/flyte/config
-          - name: auth
-            mountPath: /etc/secrets/
+        - name: config-volume
+          mountPath: /etc/flyte/config
+        - name: auth
+          mountPath: /etc/secrets/
         terminationMessagePolicy: "FallbackToLogsOnError"
       serviceAccountName: flytepropeller
       volumes:
@@ -506,9 +506,9 @@ spec:
       labels:
         app: flyte-pod-webhook
         app.kubernetes.io/name: flyte-pod-webhook
-        app.kubernetes.io/version: v1.1.47
+        app.kubernetes.io/version: v1.1.116
       annotations:
-        configChecksum: "123b14fa527f432b1b68d510c4423ab76f657aec5cebb2f8b9c16f477d4bc39"
+        configChecksum: "a7e3d3a1b6ebefd77df6b03b569a819d21831e1a837865e61cfec358e9a165f"
     spec:
       securityContext:
         fsGroup: 65534
@@ -517,7 +517,7 @@ spec:
       serviceAccountName: flyte-pod-webhook
       initContainers:
       - name: generate-secrets
-        image: "cr.flyte.org/flyteorg/flytepropeller:v1.1.47"
+        image: "cr.flyte.org/flyteorg/flytepropeller:v1.1.116"
         imagePullPolicy: "IfNotPresent"
         command:
           - flytepropeller
@@ -540,7 +540,7 @@ spec:
             mountPath: /etc/flyte/config
       containers:
         - name: webhook
-          image: "cr.flyte.org/flyteorg/flytepropeller:v1.1.47"
+          image: "cr.flyte.org/flyteorg/flytepropeller:v1.1.116"
           imagePullPolicy: "IfNotPresent"
           command:
             - flytepropeller
@@ -586,6 +586,7 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/tags: service_instance=production
+    alb.ingress.kubernetes.io/target-type: ip
     kubernetes.io/ingress.class: alb
     nginx.ingress.kubernetes.io/app-root: /console
 spec:
@@ -752,6 +753,7 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/tags: service_instance=production
+    alb.ingress.kubernetes.io/target-type: ip
     kubernetes.io/ingress.class: alb
     nginx.ingress.kubernetes.io/app-root: /console
     alb.ingress.kubernetes.io/backend-protocol-version: GRPC
@@ -769,6 +771,20 @@ spec:
           #   pathType: ImplementationSpecific
           #
           # NOTE: Port 81 in flyteadmin is the GRPC server port for FlyteAdmin.
+          - path: /flyteidl.service.SignalService
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: flyteadmin
+                port:
+                  number: 81
+          - path: /flyteidl.service.SignalService/*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: flyteadmin
+                port:
+                  number: 81
           - path: /flyteidl.service.AdminService
             pathType: ImplementationSpecific
             backend:
