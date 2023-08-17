@@ -81,8 +81,7 @@ jobs:
       component: ${{ matrix.component }}
       github-organization: ${{ inputs.gh-org }}
       dockerfile: Dockerfile
-      # TODO: enable this
-      push: false
+      push: true
     secrets:
       FLYTE_BOT_PAT: ${{ secrets.FLYTE_BOT_PAT }}
       FLYTE_BOT_USERNAME: ${{ secrets.FLYTE_BOT_USERNAME }}
