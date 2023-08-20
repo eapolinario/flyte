@@ -9,11 +9,6 @@ on:
         description: 'Version to be released - Just for testing will be removed prior to merging'
         required: true
         type: string
-      gh-org:
-        description: 'Github organization'
-        required: true
-        # TODO: Make default as flyteorg
-        default: 'eapolinario'
       go-version:
         description: 'Go version to install'
         default: '1.19'
@@ -79,7 +74,6 @@ jobs:
       # version: ${{ needs.bump_version.outputs.version }}
       version: ${{ inputs.version }}
       component: ${{ matrix.component }}
-      github-organization: ${{ inputs.gh-org }}
       dockerfile: Dockerfile
       push: true
     secrets:
