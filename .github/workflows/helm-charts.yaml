@@ -32,4 +32,4 @@ jobs:
             --app-version=${{ github.sha }} \
             --version=0.0-${{ github.sha }} \
             ${{ matrix.chart }}
-          helm push ${{ matrix.chart }}-*.tgz oci://ghcr.io/flyteorg/helm-charts
+          helm push ${{ matrix.chart }}-*.tgz oci://ghcr.io/${{ github.repository_owner }}/helm-charts
