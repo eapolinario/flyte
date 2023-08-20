@@ -8,6 +8,8 @@ ROOT_DIR=${CUR_DIR}/..
 OUTPUT_DIR="${ROOT_DIR}"/rsts/deployment/configuration/generated
 GOBIN=${GOPATH:-~/go}/bin
 
+# TODO(monorepo): Use the same version of components as the release.
+
 # The version should same as https://github.com/flyteorg/flyte/blob/6b92b72f508d0603fa44153a4e30cf81be76adfd/script/release.sh#L5-L8
 FLYTEADMIN_TAG=$(curl --silent "https://api.github.com/repos/flyteorg/flyteadmin/releases/latest" | jq -r .tag_name)
 FLYTEPROPELLER_TAG=$(curl --silent "https://api.github.com/repos/flyteorg/flytepropeller/releases/latest" | jq -r .tag_name)
