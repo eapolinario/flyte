@@ -45,6 +45,4 @@ jobs:
           labels: |
             kustomize
             helm
-          team-reviewers: |
-            flyte-maintainers
           draft: false
