@@ -9,6 +9,10 @@ ENV GOARCH "${TARGETARCH}"
 ENV GOOS linux
 
 WORKDIR /flyteorg/build
+
+# TODO(monorepo): copy other components
+COPY flytepropeller flytepropeller
+
 COPY go.mod go.sum ./
 RUN go mod download
 COPY cmd cmd
