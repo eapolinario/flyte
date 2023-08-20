@@ -2,10 +2,12 @@
 
 set -ex
 
+# TODO(monorepo): assume that all components images were built prior to this script being run.
+
 FLYTEADMIN_TAG=$(curl --silent "https://api.github.com/repos/flyteorg/flyteadmin/releases/latest" | jq -r .tag_name)
 DATACATALOG_TAG=$(curl --silent "https://api.github.com/repos/flyteorg/datacatalog/releases/latest" | jq -r .tag_name)
 FLYTECONSOLE_TAG=$(curl --silent "https://api.github.com/repos/flyteorg/flyteconsole/releases/latest" | jq -r .tag_name)
-FLYTEPROPELLER_TAG=$(curl --silent "https://api.github.com/repos/flyteorg/flytepropeller/releases/latest" | jq -r .tag_name)
+FLYTEPROPELLER_TAG=$(git rev-parse HEAD)
 FLYTECOPILOT_TAG=$(curl --silent "https://api.github.com/repos/flyteorg/flytecopilot/releases/latest" | jq -r .tag_name)
 FLYTESTDLIB_TAG=$(curl --silent "https://api.github.com/repos/flyteorg/flytestdlib/releases/latest" | jq -r .tag_name)
 
@@ -36,7 +38,8 @@ sed -i "s,image:[^P]*# FLYTECOPILOT_IMAGE,image: cr.flyte.org/flyteorg/flytecopi
 sed -i "s,tag:[^P]*# FLYTECOPILOT_TAG,tag: ${FLYTECOPILOT_TAG} # FLYTECOPILOT_TAG," ./charts/flyte-binary/values.yaml
 
 go get github.com/flyteorg/flyteadmin@${FLYTEADMIN_TAG}
-go get github.com/flyteorg/flytepropeller@${FLYTEPROPELLER_TAG}
+# TODO(monorepo): Remove other calls to `go get` once components are moved to monorepo
+# go get github.com/flyteorg/flytepropeller@${FLYTEPROPELLER_TAG}
 go get github.com/flyteorg/datacatalog@${DATACATALOG_TAG}
 go get github.com/flyteorg/flytestdlib@${FLYTESTDLIB_TAG}
 go mod tidy
