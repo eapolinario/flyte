@@ -217,6 +217,10 @@ require (
 )
 
 replace (
+	github.com/flyteorg/datacatalog => ./datacatalog
+	github.com/flyteorg/flyteadmin => ./flyteadmin
+	github.com/flyteorg/flyteplugins => ./flyteplugins
 	github.com/flyteorg/flytepropeller => ./flytepropeller
+	github.com/flyteorg/flytestdlib => ./flytestdlib
 	github.com/robfig/cron/v3 => github.com/unionai/cron/v3 v3.0.2-0.20220915080349-5790c370e63a
 )
