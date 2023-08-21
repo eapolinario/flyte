@@ -15,6 +15,10 @@ RUN apk add --no-cache build-base
 
 COPY go.mod go.sum /app/flyte/
 WORKDIR /app/flyte
+
+# TODO(monorepo): copy other components
+COPY flytepropeller flytepropeller
+
 RUN go mod download
 
 COPY --from=flyteconsole /app/ cmd/single/dist
