@@ -12,6 +12,8 @@ Flyte Admin Configuration
 
 - `cluster_resources <#section-cluster_resources>`_
 
+- `clusterpools <#section-clusterpools>`_
+
 - `clusters <#section-clusters>`_
 
 - `database <#section-database>`_
@@ -1491,6 +1493,19 @@ Whether the cluster resource sync is running in a standalone deployment and shou
 .. code-block:: yaml
 
   "false"
+  
+
+Section: clusterpools
+========================================================================================================================
+
+clusterPoolAssignments (map[string]interfaces.ClusterPoolAssignment)
+------------------------------------------------------------------------------------------------------------------------
+
+**Default Value**: 
+
+.. code-block:: yaml
+
+  {}
   
 
 Section: clusters
