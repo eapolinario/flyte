@@ -121,7 +121,11 @@ jobs:
     name: Bump git tags
     # TODO(monorepo): skip this if author is flyte-bot?
     if: ${{ github.event_name != 'pull_request' }}
-    needs: [ integration, lint, tests, generate ] # Only to ensure it can successfully build
+    needs:
+      - integration
+      - lint
+      - unit-tests
+      - generate
     uses: ./.github/workflows/bump-tags.yml
     secrets:
       FLYTE_BOT_PAT: ${{ secrets.FLYTE_BOT_PAT }}
