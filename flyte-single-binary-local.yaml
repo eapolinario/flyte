@@ -1,5 +1,6 @@
 # This is a sample configuration file for running single-binary Flyte locally against
 # a sandbox.
+#
 admin:
   endpoint: localhost:8089
   insecure: true
