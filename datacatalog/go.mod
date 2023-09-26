@@ -17,7 +17,7 @@ require (
 	google.golang.org/grpc v1.56.1
 	gorm.io/driver/postgres v1.2.3
 	gorm.io/driver/sqlite v1.1.1
-	gorm.io/gorm v1.22.4
+	gorm.io/gorm v1.25.4
 )
 
 require (
@@ -63,7 +63,7 @@ require (
 	github.com/jackc/pgtype v1.9.0 // indirect
 	github.com/jackc/pgx/v4 v4.14.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
-	github.com/jinzhu/now v1.1.4 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
