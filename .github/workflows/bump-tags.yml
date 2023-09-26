@@ -21,6 +21,7 @@ jobs:
         id: get_semver
         with:
           bump_level: "patch"
+
       - name: Print current and next version
         run: |
           echo "Current version: ${{ steps.get_semver.outputs.current_version  }}"
