@@ -3,9 +3,9 @@ name: Bump git tags
 on:
   workflow_call:
     outputs:
-      version:
+      next_version:
         description: "Tag name"
-        value: ${{ jobs.bump_version.outputs.version }}
+        value: ${{ jobs.bump_version.outputs.next_version }}
     secrets:
       FLYTE_BOT_PAT:
         required: true
@@ -14,7 +14,7 @@ jobs:
     name: Bump Version
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.bump_version.outputs.tag }}
+      next_version: ${{ steps.get_semver.outputs.next_version }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -24,8 +24,7 @@ jobs:
         id: get_semver
         with:
           bump_level: "patch"
-
-      - name: Print current and next version
+      - name: Print current and next versions
         run: |
           echo "Current version: ${{ steps.get_semver.outputs.current_version  }}"
           echo "Next version: ${{ steps.get_semver.outputs.next_version }}"
