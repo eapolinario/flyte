@@ -6,6 +6,9 @@ on:
       version:
         description: "Tag name"
         value: ${{ jobs.bump_version.outputs.version }}
+    secrets:
+      FLYTE_BOT_PAT:
+        required: true
 jobs:
   bump_version:
     name: Bump Version
@@ -29,7 +32,7 @@ jobs:
       # Generate all tags for all components
       - uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.FLYTE_BOT_PAT }}
           script: |
             github.rest.git.createRef({
               owner: context.repo.owner,
