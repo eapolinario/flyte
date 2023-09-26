@@ -154,7 +154,7 @@ jobs:
           - flytescheduler
     uses: ./.github/workflows/publish.yml
     with:
-      version: ${{ needs.bump-tags.outputs.version }}
+      version: ${{ needs.bump-tags.outputs.next_version }}
       component: ${{ matrix.component }}
       dockerfile: Dockerfile.${{ matrix.component }}
       push: true
