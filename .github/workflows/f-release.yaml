@@ -1,0 +1,15 @@
+name: release
+
+on:
+  push:
+    tags:
+      - abc/v*.*.* # stable release like, v0.19.2
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: test1
+        run: |
+          echo ${GITHUB_REF#refs/tags/}
+
