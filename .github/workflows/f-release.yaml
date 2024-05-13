@@ -12,4 +12,9 @@ jobs:
       - name: test1
         run: |
           echo ${GITHUB_REF#refs/tags/}
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          args: release --rm-dist
 
