@@ -1,0 +1,24 @@
+name: Release Workflow
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.release.tag_name, 'abc/')"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Run a script
+        run: echo "This job runs unless the tag starts with 'abc/'"
+
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Always run this job
+        run: echo "This job always runs regardless of the tag prefix"
+
