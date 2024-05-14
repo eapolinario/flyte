@@ -1,0 +1,28 @@
+project_name: eapolinario-flyte
+
+monorepo:
+  tag_prefix: abc/
+  dir: f
+
+builds:
+  - skip: true
+release:
+  github:
+    owner: eapolinario
+    name: flyte
+  draft: false
+  prerelease: auto
+  discussion_category_name: General
+  name_template: "Flyte v{{.Version}} milestone release"
+  disable: false
+  extra_files:
+    - glob: ./release/*
+git:
+  ignore_tags:
+    - "datacatalog/*"
+    - "flyteadmin/*"
+    - "flytecopilot/*"
+    - "flyteidl/*"
+    - "flyteplugins/*"
+    - "flytepropeller/*"
+    - "flytestdlib/*"
