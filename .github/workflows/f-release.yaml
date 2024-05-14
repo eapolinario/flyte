@@ -12,6 +12,9 @@ jobs:
       - name: test1
         run: |
           echo ${GITHUB_REF#refs/tags/}
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
