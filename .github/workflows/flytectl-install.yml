@@ -15,6 +15,7 @@ jobs:
     name: Install script
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
