@@ -25,4 +25,5 @@ jobs:
       - run: |
           chmod +x ./flytectl/install.sh
           ./flytectl/install.sh
+          ./bin/flytectl version
 
