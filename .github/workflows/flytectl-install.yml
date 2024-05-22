@@ -33,8 +33,5 @@ jobs:
         with:
           timeout_seconds: 15
           max_attempts: 3
-          command: |
-            chmod +x ./flytectl/install.sh
-            ./flytectl/install.sh ${{ matrix.version }}
-            ./bin/flytectl version
+          command: chmod +x ./flytectl/install.sh && ./flytectl/install.sh ${{ matrix.version }} && ./bin/flytectl version
 
