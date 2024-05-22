@@ -6,6 +6,8 @@ concurrency:
 
 on:
   pull_request:
+    paths:
+      - flytectly/**
   push:
     branches:
       - master
