@@ -20,11 +20,15 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
-          - windows-latest
+        version:
+          - v0.8.20
+          - latest
+          # Test the case where no version is specified
+          - " "
     steps:
       - uses: actions/checkout@v4
       - run: |
           chmod +x ./flytectl/install.sh
-          ./flytectl/install.sh
+          ./flytectl/install.sh ${{ matrix.version }}
           ./bin/flytectl version
 
