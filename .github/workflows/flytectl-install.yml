@@ -33,4 +33,7 @@ jobs:
           chmod +x ./flytectl/install.sh
           ./flytectl/install.sh ${{ matrix.version }}
           ./bin/flytectl version
+        retry:
+          max-tries: 3
+          delay: 5
 
